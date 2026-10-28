@@ -1,4 +1,5 @@
 //dungeon header
+//-> maze generations and tile queries
 
 /*ps: this is a C++ learning project, so there will be lots of comments on 
 new functions I didn't know, please ignore them, I'll leave a "TODO" or "NOTE"
@@ -16,7 +17,7 @@ constexpr int TILE_SIZE = 32;   //NOTE: pixels per tile on screen (sprites are d
 
 struct Dungeon {
     //why a struct and not a class? because I don't need to hide anything and this is just a buch of configuration data, so a struct is more appropriate.
-    
+    //in c++ the :: basically means "belongs to" or "is a member of", so Dungeon::At means the At function belongs to the Dungeon struct.
     int width = 0;               // in tiles
     int height = 0;              // in tiles
     std::vector<Tile> tiles;     // row-major: index = y * width + x -> less cache miss!(basically a 1D array instead of a 2D array, which is more efficient)
