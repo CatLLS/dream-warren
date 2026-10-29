@@ -1,56 +1,14 @@
 #include <ctime>
 #include "raylib.h"
-#include "raymath.h"
-#include "Dungeon.hpp"
-
-// ---------------------------------------------------------------------------
-// Sprites: loaded from assets/ if the PNG exists, otherwise drawn as a colored
-// shape. That way the game runs before any art exists, and you can drop
-// sprites in one at a time.
-// ---------------------------------------------------------------------------
-struct Sprite {
-    Texture2D tex{};
-    bool loaded = false;
-    Color fallback = MAGENTA;
-};
-
-static Sprite LoadSprite(const char* path, Color fallback) {
-    Sprite s;
-    s.fallback = fallback;
-    if (FileExists(path)) {
-        s.tex = LoadTexture(path);
-        SetTextureFilter(s.tex, TEXTURE_FILTER_POINT);  // crisp pixel art
-        s.loaded = true;
-    }
-    return s;
-}
-
-// Draws the sprite centered on `center`, scaled to `size` pixels.
-// For animation later: change `src` to pick a frame out of a sprite sheet.
-static void DrawSprite(const Sprite& s, Vector2 center, float size, float rotationDeg = 0.0f) {
-    Rectangle dst = { center.x, center.y, size, size };
-    Vector2 origin = { size / 2, size / 2 };
-    if (s.loaded) {
-        Rectangle src = { 0, 0, (float)s.tex.width, (float)s.tex.height };
-        DrawTexturePro(s.tex, src, dst, origin, rotationDeg, WHITE);
-    } else {
-        DrawRectanglePro(dst, origin, rotationDeg, s.fallback);
-    }
-}
-
-static void UnloadSprite(Sprite& s) {
-    if (s.loaded) UnloadTexture(s.tex);
-}
+#include "raymath.h" // for vector math
+#include "../include/Dungeon.hpp"
+#include "../include/Sprite.hpp"
+#include "../include/Player.hpp"
 
 // ---------------------------------------------------------------------------
 // Game state
 // ---------------------------------------------------------------------------
 enum class Screen { Title, Playing, GameOver };
-
-struct Player {
-    Vector2 pos{};          // world pixels (center)
-    float energy = 100.0f;  // health AND ammo
-};
 
 int main() {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
@@ -92,15 +50,11 @@ int main() {
 
         case Screen::Playing:
             if (IsKeyPressed(KEY_R)) startLevel();  // debug: regenerate
-
-            // TODO(you): WASD movement + wall collision against dungeon.IsWalkable().
-            //   Tip: move X and Y separately and undo the axis that hits a wall,
-            //   so the player slides along walls instead of sticking.
-            // TODO(you): aim at mouse (GetScreenToWorld2D(GetMousePosition(), camera)),
-            //   left click = shotgun blast (N pellets, random spread, costs energy).
+            UpdatePlayer(player, dungeon, dt);
             // TODO: enemies (seek player + keep distance from each other), drain energy on contact.
             // TODO: if the player stands on Tile::Exit -> level++, startLevel().
-            (void)dt;
+            
+            (void)dt;//what does this do?
 
             if (player.energy <= 0.0f) screen = Screen::GameOver;
             break;

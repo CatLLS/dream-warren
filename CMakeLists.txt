@@ -16,7 +16,9 @@ set(RAYLIB_DIR "C:/raylib")
 # 2. Criação do executável do seu jogo
 add_executable(dream_warren
     src/main.cpp
-    src/Dungeon.cpp
+    src/Dungeon.cpp #remember to add new cpps here when you create them!
+    src/Sprite.cpp 
+    src/Player.cpp
 )
 
 # 3. Vincula as pastas de cabeçalhos (.h) do seu projeto e da Raylib

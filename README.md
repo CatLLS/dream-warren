@@ -14,6 +14,10 @@ Requires CMake 3.25+ and a C++17 compiler. raylib is downloaded automatically.
 cmake -B build
 cmake --build build
 ```
+To run, after building, come to this folder's terminal and type the following code or press the run button if in visual studio through cmake (I'm using vscode to develop this one)
+```bash
+.\build\dream_warren.exe
+```
 
 Run `build/dream_warren` (on Windows with Visual Studio: `build\Debug\dream_warren.exe`).
 
